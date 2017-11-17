@@ -5,15 +5,15 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost/activity_tracker
-    username: personivsu
-    password: 93rs0n1v
+    username: 
+    password: 
     driver-class-name: com.mysql.jdbc.Driver
   thymeleaf.cache: false
   mail:
     host: mail.emailsrvr.com
     port: 587
-    username: jerico.grijaldo@personiv.com
-    password: Welcome@2017
+    username: 
+    password: 
     properties: 
       mail: 
         debug: true
