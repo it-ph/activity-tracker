@@ -1,0 +1,37 @@
+{
+  "name": "js-custom-select",
+  "version": "2.0.1",
+  "homepage": "https://github.com/axel-zarate/js-custom-select",
+  "authors": [
+    "Tom Caflisch <tomcaflisch@gmail.com>"
+  ],
+  "main": [
+    "js/customSelect.js",
+    "css/style.css"
+  ],
+  "description": "A custom auto-complete select box for AngularJS",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "select",
+    "dropdown"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "2.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.1",
+    "commit": "09c92265aa0e74daec27b461ebbe0d6b9c202cc3"
+  },
+  "_source": "https://github.com/axel-zarate/js-custom-select.git",
+  "_target": "^2.0.1",
+  "_originalSource": "js-custom-select",
+  "_direct": true
+}

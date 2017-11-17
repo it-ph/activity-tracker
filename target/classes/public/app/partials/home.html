@@ -1,0 +1,7 @@
+<div id="page-wrapper" style="min-height:936px;">
+	<div class="container-fluid">
+		<div ng-if="isUser()" ng-include="'/ActivityTracker/app/partials/employee-task.html'"></div>
+		<div ng-if="isSupervisor() && isAuthenticated()" ng-include="'/ActivityTracker/app/partials/subbordinate-status.html'"></div>
+		
+	</div>
+</div>

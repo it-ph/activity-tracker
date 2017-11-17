@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+     ng-app="employeeTracker"
+     >
+<head>
+    <meta charset="UTF-8"/>
+	
+    <title>ActivityTracker | Personiv</title>
+	<base href="/ActivityTracker/"></base>
+	
+	<link rel="shortcut icon" href="/ActivityTracker/app/img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/ActivityTracker/app/img/favicon.ico" type="image/x-icon" />
+	
+	
+    <link href="/ActivityTracker/app/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/ActivityTracker/app/css/main.css" rel="stylesheet" />
+    <link href="/ActivityTracker/app/vendor/metisMenu/dist/metisMenu.css" rel="stylesheet" />
+    <link href="/ActivityTracker/app/css/sb-admin-2.css" rel="stylesheet" />   
+    <link href="/ActivityTracker/app/vendor/angular-ui-bootstrap/dist/ui-bootstrap-csp.css" rel="stylesheet" type="text/css" />
+    <link href="/ActivityTracker/app/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  
+
+</head>
+<body ng-controller ="MainController">
+	<div class ="wrapper">
+		<div ng-if="canShowNav()" ng-include="'/ActivityTracker/app/partials/nav.html'"></div>
+		<ui-view></ui-view>
+	</div>
+
+	<script src="/ActivityTracker/app/vendor/jquery/dist/jquery.js"></script>
+    <script src="/ActivityTracker/app/vendor/bootstrap/dist/js/bootstrap.js"></script>  
+    <script src="/ActivityTracker/app/vendor/metisMenu/dist/metisMenu.js"></script>
+    <script src="/ActivityTracker/app/js/sb-admin-2.js"></script>
+    
+	
+	 <script src="/ActivityTracker/app/vendor/vendor.js"></script> 	 
+	 <script src="/ActivityTracker/app/vendor/oclazyload/dist/ocLazyLoad.js"></script> 
+	<!--
+	<script src="/ActivityTracker/app/vendor/angular/angular.min.js"></script>
+	<script src="/ActivityTracker/app/vendor/angular-cookies/angular-cookies.min.js"></script>
+	<script src="/ActivityTracker/app/vendor/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+	<script src="/ActivityTracker/app/vendor/angular-ui-router/release/angular-ui-router.min.js"></script>
+	-->
+    <script src="/ActivityTracker/app/js/main.js"></script>
+   
+	<!-- 
+	<script src="/ActivityTracker/app/dist/app.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/main.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/home.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/landing.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/login.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/nav.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/task.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/employee.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/employee-task.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/group.controller.js"></script>
+	<script src="/ActivityTracker/app/dist/controller/account.controller.js"></script>
+	
+	<script src="/ActivityTracker/app/dist/service/access.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/home.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/landing.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/login.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/task.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/employee.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/group.service.js"></script>
+	<script src="/ActivityTracker/app/dist/service/account.service.js"></script>
+	 -->
+	 <script src="/ActivityTracker/client/client.js"></script>
+ 	
+</body>
+</html>

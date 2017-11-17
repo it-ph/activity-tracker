@@ -1,0 +1,1 @@
+angular.module("employeeTracker").controller("MainController",["$rootScope","$scope","$state","Access",function(e,n,i,t){n.canShowNav=function(){switch(visible=!0,i.current.name){case"":case"landing":case"login":visible=!1;break;default:visible=!0}return visible},n.isAuthenticated=function(){return t.isAuthenticated()}}]);

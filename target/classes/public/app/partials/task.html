@@ -1,0 +1,147 @@
+
+<div id="page-wrapper">
+  <div class="row">
+    <div class="panel panel-primary" style="margin-top:22px">
+        <div class="panel-heading">Tasks</div>
+        <div class="panel-body">
+   	 	<div class="pull-left">
+          <div class="box-tools" style="display:inline-table">
+             <div class="input-group">
+               <div style="margin-right: 8px;"> Show
+              	 <select ng-model="pageCap" ng-options ="page for page in numPerPageCap"  ng-change="changeNumPerPage()" style ="height:32px;border-radius:6px;">                 
+			 	 </select> entries
+			   </div>                 
+             </div>
+           </div>
+          </div>
+          <div class="pull-left" >
+              <div class="box-tools" style="display:inline-table">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control ng-valid ng-dirty" placeholder="Search task" ng-change="searchDB()" ng-model="search_keyword" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="searchItem()">
+                          <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+                </div>
+
+              </div>
+ 			
+          </div>
+          
+          <div class="pull-right" style="padding-bottom:10px">
+               	<button type="button" id ="add-task-btn" class="btn btn-primary" data-toggle="modal" data-target="#add-task" ng-click="loadTask()"><i class="fa fa-plus"></i> New Task </button>
+          </div>
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <th>Task</th>
+              <th>Date Created</th>
+              <th>Date Updated</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in filteredList">
+                 <td ng-click ="setSelectedItem(item)" data-toggle="modal" data-target="#edit-task" class="clickable">{{item.taskName}}</td>
+                 <td>{{item.createdAt | date}}</td>
+                 <td>{{item.updatedAt | date}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div uib-pagination
+               total-items="totalItems"
+               ng-model="currentPage"
+               max-size="maxSize"
+               boundary-links="true"
+               items-per-page ="numPerPage"
+               ng-change = "pageChanged()"
+               >
+          </div>
+
+        </div>
+    </div>
+   </div>
+
+  <!-- New Task Modal -->
+  <div class="modal fade" id="add-task" role="dialog">
+     <div class="modal-dialog">
+
+         <!-- Modal content-->
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Task Details</h4>
+             </div>
+             <div class="modal-body">
+
+               <form  ng-submit="addTask()">              	
+                    <div class="form-group">				       						 
+                         <div class ="_custom-label">Task Name</div>
+                         <input type="text" class ="form-control _custom-control" ng-model = "newItem.taskName" required/>               
+					 	 <div class="form-group text-left has-error">
+                           <div class="help-block" style ="text-align:center;">
+                          	<i class="lnr-"></i><span>{{error}}</span>
+                           </div>
+                         </div>
+                      
+                 	</div>
+                 <div class="modal-footer">
+                     <input type="submit" class="btn btn-default" value ="Add" />
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 </div>
+               </form>
+
+           </div>
+         </div>
+
+     </div>
+   </div> 
+   
+    <!-- Edit Employee Modal -->
+  <div class="modal fade" id="edit-task" role="dialog">
+     <div class="modal-dialog">
+
+         <!-- Modal content-->
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Task Details</h4>
+             </div>
+             <div class="modal-body">
+
+               <form  ng-submit="editTask()">              	
+                    <div class="form-group">				       						 
+                         <div class ="_custom-label">Task Name</div>
+                         <input type="text" class ="form-control _custom-control" ng-model = "selectedItem.taskName" required/>
+                     
+					 	 <div class="form-group text-left has-error">
+                           <div class="help-block" style ="text-align:center;">
+                          	<i class="lnr-"></i><span>{{error}}</span>
+                           </div>
+                         </div>
+                      
+                 	</div>
+                 <div class="modal-footer">
+                     <input type="submit" class="btn btn-default" value ="Save" />
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 </div>
+               </form>
+
+           </div>
+         </div>
+
+     </div>
+   </div> 
+   
+   
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" role="dialog" style ="margin-top:200px;">
+    <div class="modal-dialog modal-md">
+         <div class="alert alert-success" style=" text-align:center; height:116px;">
+           	<div class="close" data-dismiss="modal" aria-label="close">&times;</div>
+				<div style ="position:relative;top:30px;"><strong>{{success_message}}</strong></div>
+	 </div>
+    </div>
+  </div>
+
+
+  </div>
