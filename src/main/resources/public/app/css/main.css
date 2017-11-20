@@ -4,10 +4,16 @@
 }
 
 #login-wrapper{
-	min-height:936px;
+	min-height:100vh;
 	background: url("/ActivityTracker/app/img/OO7XQL3Q9C.jpg");
 }
 
+.dropdown-menu>li>a{
+	color: #337ab7;
+}
+.dropdown-menu>li>a:hover{
+	color: #337ab7;
+}
 
 .centered-text{
 	text-align: center;

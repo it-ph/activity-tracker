@@ -3,6 +3,7 @@ package com.personiv.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class EmployeeController {
 	public ResponseEntity<?> addEmployee(@RequestBody Employee employee){
 		try{
 			employeeService.addEmployee(employee);
-		}catch(Exception e) {
+		}catch(DataIntegrityViolationException e) {
 			ErrorResponse err = new ErrorResponse("Duplicate Entry",employee);
 			e.printStackTrace();
 			return ResponseEntity.status(422).body(err);
@@ -56,7 +57,7 @@ public class EmployeeController {
 		
 		try{
 			employeeService.editEmployee(employee);
-		}catch(Exception e) {
+		}catch(DataIntegrityViolationException e) {
 			ErrorResponse err = new ErrorResponse("Duplicate Entry",employee);
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(422).body(err);

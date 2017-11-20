@@ -5,6 +5,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.personiv.model.Greeting;
+import com.personiv.model.Group;
 import com.personiv.model.Message;
 import com.personiv.model.UserTask;
 
@@ -23,7 +24,15 @@ public class MessageController {
 	@MessageMapping("/user-status")
 	@SendTo("/user-update/status")
 	public UserTask userUpdate(UserTask  usertask) throws Exception {
+		System.out.println("USER STATUS SOCKET");
+		System.out.println(usertask);
 		return usertask;
+	}
+	
+	@MessageMapping("/group-status")
+	@SendTo("/user-update/group")
+	public Group groupUpdate(Group group) throws Exception {
+		return group;
 	}
 
 }

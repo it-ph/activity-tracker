@@ -43,8 +43,8 @@
                   <td>
                   	<div class="btn-group">
 					
-					  <span class="dropdown-toggle clickable" data-toggle="dropdown"  >
-                        <i class="fa fa-ellipsis-h"></i>
+					  <span class="dropdown-toggle clickable" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="edit" >
+                        {{item.groupName}}
                       </span>
 					  <ul class="dropdown-menu" role="menu">
 					    <li ng-click="loadAdminSelection(item)" data-toggle="modal" data-target="#add-admin">
@@ -63,9 +63,48 @@
                             </span>
                         </li>  
 					  </ul>
-					</div> {{item.groupName}}</td>
-                 <td><div ng-repeat="admin in item.admin"><i ng-click="removeAdmin(item,admin)" class="fa fa-times clickable danger"  data-toggle="tooltip" data-placement="left" title="click to remove"></i> {{admin.employee.firstName}} {{admin.employee.middleName}} {{admin.employee.lastName}} {{admin.employee.suffix}}</div></td>           
-                 <td><div ng-repeat="member in item.members"><i ng-click="removeMember(item,member)" class="fa fa-times clickable danger"  data-toggle="tooltip" data-placement="left" title="click to remove"></i> {{member.employee.firstName}} {{member.employee.middleName}} {{member.employee.lastName}} {{member.employee.suffix}}</div></td>
+					</div> </td>
+                 <td>
+                 	<div ng-repeat="admin in item.admin">
+	                 	<div class="btn-group" >
+						
+						  <span class="dropdown-toggle clickable" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="remove" >
+	                       <i class="fa fa-times clickable danger"></i>  {{admin.employee.firstName}} {{admin.employee.lastName}} {{admin.employee.suffix}}   
+	                      </span>
+						  <ul class="dropdown-menu" role="menu">
+						    <li>
+	                            <span ng-click="removeAdmin(item,admin)" >
+	                                remove {{admin.employee.firstName}}      	                
+	                            </span>
+	                        </li>
+	                    
+						  </ul>
+						</div>
+					</div>
+                 </td>           
+                 
+                 <td>
+                 	<div ng-repeat="member in item.members">
+	                 	<div class="btn-group" >
+						
+						  <span class="dropdown-toggle clickable" data-toggle="dropdown" data-toggle="tooltip" data-placement="left" title="remove" >
+	                       <i class="fa fa-times clickable danger"></i>  {{member.employee.firstName}} {{member.employee.lastName}} {{member.employee.suffix}}   
+	                      </span>
+						  <ul class="dropdown-menu" role="menu">
+						    <li>
+	                            <span ng-click="removeMember(item,member)">
+	                                remove {{member.employee.firstName}}      	                
+	                            </span>
+	                        </li>
+	                    
+						  </ul>
+						</div>
+					</div>
+					<!-- 
+                	 <div ng-repeat="member in item.members"><i ng-click="removeMember(item,member)" class="fa fa-times clickable danger"  data-toggle="tooltip" data-placement="left" title="click to remove"></i> {{member.employee.firstName}} {{member.employee.middleName}} {{member.employee.lastName}} {{member.employee.suffix}}</div>
+                  	-->
+                 </td>
+             
               </tr>
             </tbody>
           </table>

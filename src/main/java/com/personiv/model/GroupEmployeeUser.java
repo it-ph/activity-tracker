@@ -8,18 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupEmployeeUser {
-	public Group getGroup() {
-		return group;
-	}
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-	public EmployeeUser getEmployeeUser() {
-		return employeeUser;
-	}
-	public void setEmployeeUser(EmployeeUser employeeUser) {
-		this.employeeUser = employeeUser;
-	}
 	private Group group;
 	private EmployeeUser employeeUser;
 }

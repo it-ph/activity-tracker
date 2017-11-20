@@ -3,6 +3,7 @@ package com.personiv.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class TaskController {
 	public ResponseEntity<?> addTask(@RequestBody Task task){
 		try {
 			taskService.addTask(task);
-		}catch(Exception e) {
+		}catch(DataIntegrityViolationException e) {
 			ErrorResponse err = new ErrorResponse("Duplicate Entry",task);
 			return ResponseEntity.status(422).body(err);
 		}
@@ -51,7 +52,7 @@ public class TaskController {
 		try {
 			taskService.updateTask(task);
 			
-		}catch(Exception e) {
+		}catch(DataIntegrityViolationException e) {
 			ErrorResponse err = new ErrorResponse("Duplicate entry",task);
 			return ResponseEntity.status(422).body(err);
 		}

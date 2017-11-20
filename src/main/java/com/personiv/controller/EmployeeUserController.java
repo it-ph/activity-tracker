@@ -3,6 +3,7 @@ package com.personiv.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.personiv.model.EmployeeUser;
+import com.personiv.model.ErrorResponse;
 import com.personiv.model.Group;
 import com.personiv.model.Role;
+import com.personiv.model.User;
 import com.personiv.service.EmployeeUserService;
 
 @RestController
@@ -42,14 +45,37 @@ public class EmployeeUserController {
 
 	@RequestMapping(path = "/accounts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addEmployeeUser(@RequestBody EmployeeUser empUser){
-		empUserService.addEmployeeUser(empUser);
-		return ResponseEntity.ok(empUser);
+		try {
+			empUserService.addEmployeeUser(empUser);
+
+			return ResponseEntity.ok(empUser);
+		}catch(DataIntegrityViolationException e) {
+
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate Entry", empUser));
+		}
 	}
 	
 	@RequestMapping(path = "/accounts", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateEmployeeUser(@RequestBody EmployeeUser empUser){
-		empUserService.updateEmployeeUser(empUser);
-		return ResponseEntity.ok(empUser);
+		try {
+
+			empUserService.updateEmployeeUser(empUser);
+			return ResponseEntity.ok(empUser);
+		}catch(DataIntegrityViolationException e) {
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate Entry",empUser));
+		}
+	}
+	
+	@RequestMapping(path = "/accounts/updateUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateUser(@RequestBody User user){
+		try {
+
+			empUserService.updateUser(user);
+
+			return ResponseEntity.ok(user);
+		}catch(DataIntegrityViolationException e) {
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate Entry",user));
+		}
 	}
 	
 	@RequestMapping(path= "/accounts/enable", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

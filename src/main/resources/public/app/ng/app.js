@@ -97,11 +97,26 @@
 		        templateUrl: '/ActivityTracker/app/partials/account.html', 
 		        controller: 'AccountController',
 		        resolve: {
-	                  isAdmin : ['$q', 'Access', function ($q, Access) {
+	                  isLoggedIn : ['$q', 'Access', function ($q, Access) {
 	                      var deferred = $q.defer();
 	                      if (Access.isAuthenticated() && Access.getUser().role.role =='ADMIN') { deferred.resolve();}
 	                      else {deferred.reject(); }
 	                      
+	                      return deferred.promise;
+	                  }]
+	            }
+		      
+		    })
+		    .state("profile", {
+		        url: '/profile',
+		        templateUrl: '/ActivityTracker/app/partials/profile.html', 
+		        controller: 'ProfileController',
+		        resolve: {
+	                  isNotUser : ['$q', 'Access', function ($q, Access) {
+	                      var deferred = $q.defer();
+	                      if (Access.isAuthenticated()) {deferred.resolve(); }
+	                      else { deferred.reject();  }
+
 	                      return deferred.promise;
 	                  }]
 	            }
@@ -117,7 +132,6 @@
 		      
 		    })
 		   
-		    $locationProvider.html5Mode(false);
 		}]);
 	
 	angular
@@ -136,6 +150,8 @@
 			$http.defaults.headers.common.Authorization = 'Bearer ' + token;
 		
 			$cookies.put('tracker-token', token);
+			
+			console.log(data);
 			Access.user(data.principal.user);
 			$state.go('home');
 		})

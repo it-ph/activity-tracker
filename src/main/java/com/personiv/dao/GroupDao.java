@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.personiv.model.EmployeeTask;
 import com.personiv.model.EmployeeUser;
 import com.personiv.model.Group;
@@ -156,7 +157,7 @@ public class GroupDao  extends JdbcDaoSupport{
 		  jdbcTemplate.update(sql,new Object[] {groupId,userId});	
 	}
 
-	public void editGroup(Group group) {
+	public void editGroup(Group group){
 		String sql = "UPDATE groups SET groupName =? WHERE id =?";
 		jdbcTemplate.update(sql,new Object[] {group.getGroupName(),group.getId()});	
 		

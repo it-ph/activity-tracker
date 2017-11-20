@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.personiv.model.ErrorResponse;
 import com.personiv.model.Group;
 import com.personiv.model.GroupEmployeeUser;
 import com.personiv.model.GroupTask;
@@ -54,13 +57,31 @@ public class GroupController {
 	
 	@RequestMapping(path= "/groups", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<?> addGroups(@RequestBody Group group){
-		groupService.addGroup(group);
-		return ResponseEntity.ok(group);
+
+		try {
+			groupService.addGroup(group);
+			return ResponseEntity.ok(group);
+		}
+		catch(DataIntegrityViolationException  ex){
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate entry",group));
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(500).body(group);
+		}
 	}
 	@RequestMapping(path= "/groups", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<?> editGroup(@RequestBody Group group){
-		groupService.editGroup(group);
-		return ResponseEntity.ok(group);
+		
+		try {
+			groupService.editGroup(group);
+			return ResponseEntity.ok(group);
+		}
+		catch(DataIntegrityViolationException  ex){
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate entry",group));
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(500).body(group);
+		}
 	}
 	@RequestMapping(path= "/group-task/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public List<GroupTask> groupTask(@PathVariable("id") Long id){
@@ -68,14 +89,27 @@ public class GroupController {
 	}
 	@RequestMapping(path= "/groups/addMember", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<?> addGroupMember(@RequestBody GroupEmployeeUser groupEmpUser) {
-		groupService.addGroupMember(groupEmpUser.getGroup().getId(), groupEmpUser.getEmployeeUser().getUser().getId());	
-		return ResponseEntity.ok(groupEmpUser);
+		
+		try{
+
+			groupService.addGroupMember(groupEmpUser.getGroup().getId(), groupEmpUser.getEmployeeUser().getUser().getId());	
+			return ResponseEntity.ok(groupEmpUser);
+		}catch(DataIntegrityViolationException  ex){
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate entry",groupEmpUser));
+		}
+		
 	}
 
 	@RequestMapping(path= "/groups/addAdmin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<?> addGroupAddAdmin(@RequestBody GroupEmployeeUser groupEmpUser) {
-		groupService.addGroupAdmin(groupEmpUser.getGroup().getId(), groupEmpUser.getEmployeeUser().getUser().getId());
-		return ResponseEntity.ok(groupEmpUser);
+		try {
+
+			groupService.addGroupAdmin(groupEmpUser.getGroup().getId(), groupEmpUser.getEmployeeUser().getUser().getId());
+			return ResponseEntity.ok(groupEmpUser);
+			
+		}catch(DataIntegrityViolationException  ex){
+			return ResponseEntity.status(422).body(new ErrorResponse("Duplicate entry",groupEmpUser));
+		}
 	}
 	
 	@RequestMapping(path= "/groups/removeAdmin", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)	
@@ -90,13 +124,11 @@ public class GroupController {
 		return ResponseEntity.ok(groupEmpUser);
 	}
 	@RequestMapping(path= "/group-task", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)	
-	//public List<GroupTask> getMyTasks(@RequestHeader(value="Authorization")String requestHeader){
 	public List<GroupTask> getMyTasks(Principal principal){
 		
 		User user = null;
 		List<GroupTask> groupTask = null;
 		try {
-			System.out.println("USER: "+principal.getName());
 			user = userService.getUserByUsername(principal.getName());
 			groupTask = groupService.getGroupTask(user.getId());
 			

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.personiv.dao.EmployeeUserDao;
 import com.personiv.model.EmployeeUser;
 import com.personiv.model.Role;
+import com.personiv.model.User;
 
 @Service
 public class EmployeeUserService {
@@ -20,6 +21,10 @@ public class EmployeeUserService {
 	}
 	public void updateEmployeeUser(EmployeeUser empUser) {
 		employeeDao.updateEmployeeUser(empUser);
+	}
+	
+	public void updateUser(User user) {
+		employeeDao.updateUser(user);
 	}
 	public List<EmployeeUser> getEmployeeUsers() {
 		return employeeDao.getEmployeeUsers();

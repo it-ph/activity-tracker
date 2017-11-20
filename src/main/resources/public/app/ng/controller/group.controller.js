@@ -77,7 +77,14 @@ angular
 			$state.go('group-detail',{group:item});
 		}
 		
+		$scope.$on('groupUpdateBroadcast',function(event,data){
+			console.log('groupUpdate broadcast event received groupController');
+			loadData();
+		});
+		
 		$scope.addGroup = function (){
+			
+			$scope.error ='';			
 			GroupDataOp
 				.addGroup($scope.newGroup)
 				.then(function(response){
@@ -92,15 +99,20 @@ angular
 					setTimeout(function(){
 					    $('#successModal').modal('hide');
 					}, 3000);
-					
+					console.log('emiting group event');
+					$scope.$emit('groupUpdateEmit',$scope.newGroup);
 					loadData();
 				})
 				.catch(function(error){
 					console.log(error);
+					$scope.error = error.data.message;
 				});
 		}
 		
 		$scope.editGroup = function(){
+			
+			$scope.error ='';
+			
 			GroupDataOp
 				.editGroup($scope.selectedGroup)
 				.then(function(response){
@@ -115,10 +127,14 @@ angular
 					    $('#successModal').modal('hide');
 					}, 3000);
 					
+
+					console.log('emiting group event');
+					$scope.$emit('groupUpdateEmit',$scope.selectedGroup);
 					loadData();
 				})
 				.catch(function(error){
-					
+					console.log(error);
+					$scope.error = error.data.message;
 				})
 		}
 		$scope.addMember = function(){
@@ -138,6 +154,7 @@ angular
 					    $('#successModal').modal('hide');
 					}, 3000);
 					
+					$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
 					$scope.newItem.groupEmployee ={};
 					loadData();
 				})
@@ -168,7 +185,8 @@ angular
 				setTimeout(function(){
 				    $('#successModal').modal('hide');
 				}, 3000);
-				
+
+				$scope.$emit('groupUpdateEmit',selectedGroup);
 				loadData();
 			})
 			.catch(function(error){
@@ -194,8 +212,9 @@ angular
 				setTimeout(function(){
 				    $('#successModal').modal('hide');
 				}, 3000);
-				
+				$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
 				$scope.newItem.groupEmployee ={};
+				
 				loadData();
 			})
 			.catch(function(error){
@@ -222,7 +241,7 @@ angular
 				setTimeout(function(){
 				    $('#successModal').modal('hide');
 				}, 3000);
-				
+				$scope.$emit('groupUpdateEmit',selectedGroup);
 				loadData();
 			})
 			.catch(function(error){

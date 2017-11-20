@@ -44,6 +44,17 @@ angular
 		}
 		
 		AccountDataOp
+		.updateUser = function(account){
+			return $http({
+					method: 'POST',
+					 url: '/ActivityTracker/accounts/updateUser',
+					 dataType: 'json',
+					 data : account,
+					 headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+			})
+		}
+		
+		AccountDataOp
 			.resetAccount = function(account){
 				return $http({
 						method: 'POST',

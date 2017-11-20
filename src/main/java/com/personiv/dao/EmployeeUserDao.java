@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.personiv.model.EmployeeUser;
 import com.personiv.model.Role;
+import com.personiv.model.User;
 import com.personiv.utils.rowmapper.EmployeeUserRowMapper;
 @Repository
 @Transactional(readOnly = false)
@@ -94,6 +95,12 @@ public class EmployeeUserDao extends JdbcDaoSupport{
 		String sql ="UPDATE employee_user set userId = ?, employeeId = ?";
 		jdbcTemplate.update(sql,new Object[] {empUser.getEmployee().getId(),empUser.getEmployee().getId()});
 		
+	}
+	public void updateUser(User user) {
+		String sql  ="UPDATE users  set password = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?";
+		String password = passwordEncoder().encode(user.getPassword());
+		
+		jdbcTemplate.update(sql,new Object[] {password,user.getId()});
 	}
 
 	public void enableUser(EmployeeUser user) {
