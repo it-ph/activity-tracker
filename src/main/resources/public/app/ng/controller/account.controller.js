@@ -44,6 +44,9 @@ angular
 		loadData();
 		
 		$scope.loadAccount = function(){
+			
+			$scope.error = '';
+			
 			EmployeeDataOp
 				.getEmployeeList()
 				.then(function(response){
@@ -101,10 +104,24 @@ angular
 			$scope.selectedItem = item;
 		}
 		
+		$scope.showModal = function(){
+			$scope.error ='';
+		}
+		
+		$scope.hideModal = function(){
+			$scope.error = '';
+		}
 		
 		
 		$scope.addAccount= function(){
-			AccountDataOp
+			$scope.error ='';
+			
+			if(angular.equals({},$scope.newItem.employee)){
+				
+				$scope.error ="Please select an employee";
+			}else{
+				
+				AccountDataOp
 				.addAccount($scope.newItem)
 				.then(function(response){
 					
@@ -125,6 +142,8 @@ angular
 					console.log(error);
 					$scope.error = error.data.message;
 				})
+			}
+			
 		}
 		
 		$scope.updateAccount = function(){
