@@ -49,14 +49,17 @@ angular
 		};
 		
 		$scope.setSelectedGroup = function(group){
+			$scope.error ='';
 			$scope.selectedGroup = group;
 		}
 		$scope.setSelectedMember = function(group,member){
+			$scope.error ='';
 			$scope.selectedMember.group = group;
 			$scope.selectedMember.employeeUser = member;
 		}
 		
 		$scope.setSelectedAdmin = function(group,admin){
+			$scope.error ='';
 			$scope.selectedAdmin.group = group;
 			$scope.selectedAdmin.employeeUser = admin;
 		}
@@ -139,6 +142,17 @@ angular
 		}
 		$scope.addMember = function(){
 			
+			console.log($scope.newItem.groupEmployee);
+			
+			$scope.error ='';
+			
+			if(jQuery.isEmptyObject($scope.newItem.groupEmployee.employeeUser)){
+				
+				$scope.error ='Please select a member';
+				
+			}else{
+				
+			
 			GroupDataOp
 				.addMember($scope.newItem.groupEmployee)
 				.then(function(response){
@@ -161,6 +175,7 @@ angular
 				.catch(function(error){
 					console.log(error);
 				});
+			}
 		}
 		
 		$scope.removeMember = function(selectedGroup,selectedMember){
@@ -196,30 +211,38 @@ angular
 		
 		
 		$scope.addAdmin = function(){
+			$scope.error ='';
 			
-			console.log($scope.newItem.groupEmployee);
 			
-			GroupDataOp
-			.addAdmin($scope.newItem.groupEmployee)
-			.then(function(response){
-				console.log(response);
+			if(jQuery.isEmptyObject($scope.newItem.groupEmployee.employeeUser)){
+	
+				$scope.error ='Please select an admin';
 				
-				$scope.success_message = 'Admin added succesfully!';
+			}else{
 				
-				$('#add-admin').modal('hide');
-				$('#successModal').modal('show');
-				
-				setTimeout(function(){
-				    $('#successModal').modal('hide');
-				}, 3000);
-				$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
-				$scope.newItem.groupEmployee ={};
-				
-				loadData();
-			})
-			.catch(function(error){
-				console.log(error);
-			});
+				GroupDataOp
+				.addAdmin($scope.newItem.groupEmployee)
+				.then(function(response){
+					console.log(response);
+					
+					$scope.success_message = 'Admin added succesfully!';
+					
+					$('#add-admin').modal('hide');
+					$('#successModal').modal('show');
+					
+					setTimeout(function(){
+					    $('#successModal').modal('hide');
+					}, 3000);
+					$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
+					$scope.newItem.groupEmployee ={};
+					
+					loadData();
+				})
+				.catch(function(error){
+					console.log(error);
+				});
+			}
+		
 		}
 		
 		
@@ -248,7 +271,11 @@ angular
 				console.log(error);
 			});
 		}
+		
 		$scope.loadMemberSelection = function(group){
+			
+			$scope.error ='';
+			
 			GroupDataOp
 				.getAvailableMembers(group)
 				.then(function(response){
@@ -264,6 +291,9 @@ angular
 		}
 		
 		$scope.loadAdminSelection = function(group){
+			
+			$scope.error = '';
+			
 			GroupDataOp
 				.getAvailableAdmins(group)
 				.then(function(response){
@@ -292,6 +322,7 @@ angular
 		}
 		
 		function loadData(){
+			$scope.error = '';
 			
 			GroupDataOp
 				.getGroupList()
@@ -308,5 +339,8 @@ angular
 					console.log(error);
 				});
 		}
+		
+		
+	
 		
 	}]); 
