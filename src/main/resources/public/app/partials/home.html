@@ -2,6 +2,6 @@
 	<div class="container-fluid">
 		<div ng-if="isUser()" ng-include="'/ActivityTracker/app/partials/employee-task.html'"></div>
 		<div ng-if="isSupervisor() && isAuthenticated()" ng-include="'/ActivityTracker/app/partials/subbordinate-status.html'"></div>
-		
+		<div ng-if="isAdmin() && isAuthenticated()" ng-include="'/ActivityTracker/app/partials/task-history.html'"></div>
 	</div>
 </div>

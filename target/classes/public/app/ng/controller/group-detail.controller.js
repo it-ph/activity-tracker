@@ -37,6 +37,6 @@ angular
 			$scope.adminList = $scope.group.admin;
 			$scope.memberList = $scope.group.members;
 			
-			console.log($scope.adminList);
+			//console.log($scope.adminList);
 		
 	}]); 

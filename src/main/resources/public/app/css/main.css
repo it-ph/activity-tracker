@@ -29,6 +29,12 @@
 	width: 100%;
 }
 
+.datepicker,
+.table-condensed {
+  width: 500px;
+  height:500px;
+}
+
 .datepickerdemoBasicUsage {
   /** Demo styles for mdCalendar. */ 
   

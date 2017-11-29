@@ -2,11 +2,7 @@ angular
 	.module('employeeTracker')
 	.controller('SubbordinateController',['$rootScope','$cookies','$scope', '$state','$stomp','GroupDataOp','Access',
 		function($rootScope,$cookies,$scope, $state,$stomp,GroupDataOp,Access){
-		console.log('Subord Controller');
-	
 		
-		console.log(Access.getUser());
-
 		
 		$scope.success_message = '';		
 		$scope.itemList =[];
@@ -53,11 +49,24 @@ angular
 	
 		};
 		
+		
 		$scope.$on('taskUpdate',function(event,data){
+
+			//console.log('Group update broadcast received subbordinate controller');
 			loadTask();
 		});
 		
-	
+		$scope.$on('groupUpdateBroadcast',function(event,data){
+
+			//console.log('Group update broadcast received subbordinate controller');
+			loadTask();
+		});
+		
+		$scope.$on('groupUpdate',function(event,data){
+			//console.log('Group update broadcast received subordinate controller');
+			loadTask();
+		});
+		
 	
 		 function loadTask(){
 			

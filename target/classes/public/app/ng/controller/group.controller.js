@@ -49,14 +49,17 @@ angular
 		};
 		
 		$scope.setSelectedGroup = function(group){
+			$scope.error ='';
 			$scope.selectedGroup = group;
 		}
 		$scope.setSelectedMember = function(group,member){
+			$scope.error ='';
 			$scope.selectedMember.group = group;
 			$scope.selectedMember.employeeUser = member;
 		}
 		
 		$scope.setSelectedAdmin = function(group,admin){
+			$scope.error ='';
 			$scope.selectedAdmin.group = group;
 			$scope.selectedAdmin.employeeUser = admin;
 		}
@@ -77,7 +80,14 @@ angular
 			$state.go('group-detail',{group:item});
 		}
 		
+		$scope.$on('groupUpdateBroadcast',function(event,data){
+			console.log('groupUpdate broadcast event received groupController');
+			loadData();
+		});
+		
 		$scope.addGroup = function (){
+			
+			$scope.error ='';			
 			GroupDataOp
 				.addGroup($scope.newGroup)
 				.then(function(response){
@@ -92,15 +102,20 @@ angular
 					setTimeout(function(){
 					    $('#successModal').modal('hide');
 					}, 3000);
-					
+					console.log('emiting group event');
+					$scope.$emit('groupUpdateEmit',$scope.newGroup);
 					loadData();
 				})
 				.catch(function(error){
 					console.log(error);
+					$scope.error = error.data.message;
 				});
 		}
 		
 		$scope.editGroup = function(){
+			
+			$scope.error ='';
+			
 			GroupDataOp
 				.editGroup($scope.selectedGroup)
 				.then(function(response){
@@ -115,18 +130,33 @@ angular
 					    $('#successModal').modal('hide');
 					}, 3000);
 					
+
+					//console.log('emiting group event');
+					$scope.$emit('groupUpdateEmit',$scope.selectedGroup);
 					loadData();
 				})
 				.catch(function(error){
-					
+					console.log(error);
+					$scope.error = error.data.message;
 				})
 		}
 		$scope.addMember = function(){
 			
+			//console.log($scope.newItem.groupEmployee);
+			
+			$scope.error ='';
+			
+			if(jQuery.isEmptyObject($scope.newItem.groupEmployee.employeeUser)){
+				
+				$scope.error ='Please select a member';
+				
+			}else{
+				
+			
 			GroupDataOp
 				.addMember($scope.newItem.groupEmployee)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 
 					$scope.success_message = 'Member added succesfully!';
@@ -138,12 +168,14 @@ angular
 					    $('#successModal').modal('hide');
 					}, 3000);
 					
+					$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
 					$scope.newItem.groupEmployee ={};
 					loadData();
 				})
 				.catch(function(error){
 					console.log(error);
 				});
+			}
 		}
 		
 		$scope.removeMember = function(selectedGroup,selectedMember){
@@ -152,12 +184,12 @@ angular
 				employeeUser: selectedMember
 			};
 			
-			console.log(groupEmployee);
+			//console.log(groupEmployee);
 			
 			GroupDataOp
 			.removeMember(groupEmployee )
 			.then(function(response){
-				console.log(response);
+				//console.log(response);
 				
 				
 				$scope.success_message = 'Member removed succesfully!';
@@ -168,7 +200,8 @@ angular
 				setTimeout(function(){
 				    $('#successModal').modal('hide');
 				}, 3000);
-				
+
+				$scope.$emit('groupUpdateEmit',selectedGroup);
 				loadData();
 			})
 			.catch(function(error){
@@ -178,29 +211,38 @@ angular
 		
 		
 		$scope.addAdmin = function(){
+			$scope.error ='';
 			
-			console.log($scope.newItem.groupEmployee);
 			
-			GroupDataOp
-			.addAdmin($scope.newItem.groupEmployee)
-			.then(function(response){
-				console.log(response);
+			if(jQuery.isEmptyObject($scope.newItem.groupEmployee.employeeUser)){
+	
+				$scope.error ='Please select an admin';
 				
-				$scope.success_message = 'Admin added succesfully!';
+			}else{
 				
-				$('#add-admin').modal('hide');
-				$('#successModal').modal('show');
-				
-				setTimeout(function(){
-				    $('#successModal').modal('hide');
-				}, 3000);
-				
-				$scope.newItem.groupEmployee ={};
-				loadData();
-			})
-			.catch(function(error){
-				console.log(error);
-			});
+				GroupDataOp
+				.addAdmin($scope.newItem.groupEmployee)
+				.then(function(response){
+					//console.log(response);
+					
+					$scope.success_message = 'Admin added succesfully!';
+					
+					$('#add-admin').modal('hide');
+					$('#successModal').modal('show');
+					
+					setTimeout(function(){
+					    $('#successModal').modal('hide');
+					}, 3000);
+					$scope.$emit('groupUpdateEmit',$scope.newItem.groupEmployee.group);
+					$scope.newItem.groupEmployee ={};
+					
+					loadData();
+				})
+				.catch(function(error){
+					console.log(error);
+				});
+			}
+		
 		}
 		
 		
@@ -213,7 +255,7 @@ angular
 			GroupDataOp
 			.removeAdmin(groupEmployee)
 			.then(function(response){
-				console.log(response);
+				//console.log(response);
 				
 				$scope.success_message = 'Admin removed succesfully!';
 				
@@ -222,18 +264,22 @@ angular
 				setTimeout(function(){
 				    $('#successModal').modal('hide');
 				}, 3000);
-				
+				$scope.$emit('groupUpdateEmit',selectedGroup);
 				loadData();
 			})
 			.catch(function(error){
 				console.log(error);
 			});
 		}
+		
 		$scope.loadMemberSelection = function(group){
+			
+			$scope.error ='';
+			
 			GroupDataOp
 				.getAvailableMembers(group)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.memberList = response.data;
 					$scope.newItem.groupEmployee.group = group;
@@ -245,10 +291,13 @@ angular
 		}
 		
 		$scope.loadAdminSelection = function(group){
+			
+			$scope.error = '';
+			
 			GroupDataOp
 				.getAvailableAdmins(group)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.adminList = response.data;
 					$scope.newItem.groupEmployee.group = group;
@@ -273,6 +322,7 @@ angular
 		}
 		
 		function loadData(){
+			$scope.error = '';
 			
 			GroupDataOp
 				.getGroupList()
@@ -289,5 +339,8 @@ angular
 					console.log(error);
 				});
 		}
+		
+		
+	
 		
 	}]); 

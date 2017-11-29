@@ -76,7 +76,7 @@ angular
 		
 		$scope.setSelectedItem  = function(item){
 			$scope.selectedItem = item;
-			console.log(item);
+			//console.log(item);
 		}
 		
 		$scope.addEmployee = function(){

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.personiv.dao.TaskDao;
+import com.personiv.model.Period;
 import com.personiv.model.Task;
 
 @Service
@@ -28,4 +29,6 @@ public class TaskService {
 	public void updateTask(Task task){
 		taskDao.updateTask(task);
 	}
+
+	
 }

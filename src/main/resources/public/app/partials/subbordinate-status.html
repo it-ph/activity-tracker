@@ -13,6 +13,7 @@
               <th>Task</th>
               <th>Start</th>
               <th>End</th>
+              <th>Duration</th>
             </thead>
             <tbody>
               <tr ng-repeat="member in item.memberTasks">
@@ -21,6 +22,7 @@
             	 <td>{{member.task.taskName}}</td>
             	 <td>{{member.startDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
             	 <td>{{member.endDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
+            	 <td>{{(member.endDate - member.startDate) | durationToTime: member.endDate }}</td>
               </tr>
             </tbody>
           </table>
