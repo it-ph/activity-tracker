@@ -1,7 +1,7 @@
 
 	
 	angular
-		.module('employeeTracker',['ui.router','ngCookies','ui.bootstrap','AxelSoft','ngStomp']);
+		.module('employeeTracker',['ui.router','ngCookies','ui.bootstrap','ui.bootstrap.datetimepicker','AxelSoft','ngStomp','ngFileSaver']);
 
 	angular
 		.module('employeeTracker')
@@ -69,8 +69,8 @@
 	                    	  
 	                    	  deferred.reject(); 
 	                     }
-	                      console.log(Access.getUser().role.role);
-	                      console.log(Access.isAuthenticated() && Access.getUser().role.role =='ADMIN');
+	                      //console.log(Access.getUser().role.role);
+	                     // console.log(Access.isAuthenticated() && Access.getUser().role.role =='ADMIN');
 	                      return deferred.promise;
 	                  }]
 	            }
@@ -122,15 +122,7 @@
 	            }
 		      
 		    })
-		      .state("group-detail", {
-		        url: '/group-detail',
-		        templateUrl: '/ActivityTracker/app/partials/group-detail.html', 
-		        controller: 'GroupDetailController',
-		        params: {
-		            group: null
-		        }
-		      
-		    })
+		
 		   
 		}]);
 	
@@ -141,19 +133,31 @@
 		// Check by making a call to server.
 		token = $cookies.get('tracker-token');
 		
+
+		
 		Access
 		.getClaimsFromToken(token)
 		.then(function(response){
-			console.log('Getting claims from token');
+			//console.log('Getting claims from token');
 			
 			data = response.data;
-			$http.defaults.headers.common.Authorization = 'Bearer ' + token;
-		
-			$cookies.put('tracker-token', token);
 			
-			console.log(data);
-			Access.user(data.principal.user);
-			$state.go('home');
+			
+			if(data == ''){
+				
+				$state.go('login');
+				
+			}else{
+				
+				$http.defaults.headers.common.Authorization = 'Bearer ' + token;
+				
+				$cookies.put('tracker-token', token);
+				
+				//console.log(data);
+				Access.user(data.principal.user);
+				$state.go('home');
+			}
+			
 		})
 		.catch(function(error){
 				console.log(error);
@@ -161,4 +165,15 @@
 		});
 		
 		
+	}]);
+	
+	angular
+	.module('employeeTracker')
+	.filter('durationToTime',[function(){
+		
+		 return function(input,notEmpty) {
+			 
+			 return notEmpty ? moment.utc(input).format('HH:mm:ss') : 'N/A';
+		
+		}
 	}]);

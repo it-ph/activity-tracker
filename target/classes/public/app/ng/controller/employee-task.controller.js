@@ -50,9 +50,9 @@ angular
 		};
 		
 		
-		$scope.emitEvent = function(obj){
+		$scope.emitEvent = function(task,obj){
 			
-			$scope.$emit('eventEmitedName',obj);
+			$scope.$emit(task,obj);
 		}
 		
 
@@ -99,17 +99,19 @@ angular
     				setTimeout(function(){
     				    $('#successModal').modal('hide');
     				}, 3000);
+
+    				//console.log('emitting end task event');
+    				$scope.$emit('endTaskEmit',$scope.itemList[0]);
     				
     				loadData();
     				//refresh();
-    				console.log($scope.itemList[0]);
+    				//console.log($scope.itemList[0]);
     				
 //    				$stomp.send('/app/user-status',$scope.itemList[0] , {
 //    		          priority: 9,
 //    		          custom: 42 // Custom Headers 
 //    		        });
     				
-    				$scope.emitEvent($scope.itemList[0]);
 //    				$stomp.send('/app/user-status', $scope.itemList[0], {
 //    		          priority: 9,
 //    		          custom: 42 // Custom Headers 
@@ -171,8 +173,9 @@ angular
 //    		          custom: 42 // Custom Headers 
 //    		        });
     				
-    				$scope.emitEvent($scope.itemList[0]);
-	    			
+    				//$scope.emitEvent('addTask',$scope.itemList[0]);
+    				console.log('emitting addTask event');
+    				$scope.$emit('addTaskEmit',$scope.itemList[0]);
 					
 				})
 				.catch(function(error){

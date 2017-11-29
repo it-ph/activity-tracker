@@ -52,18 +52,18 @@ angular
 		
 		$scope.$on('taskUpdate',function(event,data){
 
-			console.log('Group update broadcast received subbordinate controller');
+			//console.log('Group update broadcast received subbordinate controller');
 			loadTask();
 		});
 		
 		$scope.$on('groupUpdateBroadcast',function(event,data){
 
-			console.log('Group update broadcast received subbordinate controller');
+			//console.log('Group update broadcast received subbordinate controller');
 			loadTask();
 		});
 		
 		$scope.$on('groupUpdate',function(event,data){
-			console.log('Group update broadcast received subordinate controller');
+			//console.log('Group update broadcast received subordinate controller');
 			loadTask();
 		});
 		

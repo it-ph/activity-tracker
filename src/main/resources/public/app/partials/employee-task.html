@@ -35,6 +35,7 @@
               <th>Task</th>
               <th>Start</th>
               <th>End</th>
+              <th>Duration</th>
             </thead>
             <tbody>
               <tr ng-repeat="item in filteredList">
@@ -44,6 +45,7 @@
                  <td ng-if="item.endDate == null">
                  	<button type="button" class="btn btn-success" ng-click="endTask(item)">  <i class="fa fa-check"></i> end task </button>
 		         </td>
+		         <td>{{(item.endDate - item.startDate) | durationToTime: item.endDate }}</td>
               </tr>
             </tbody>
           </table>

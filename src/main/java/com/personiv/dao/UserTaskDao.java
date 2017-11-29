@@ -11,7 +11,11 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.personiv.model.EmployeeTask;
+import com.personiv.model.Period;
+import com.personiv.model.Task;
 import com.personiv.model.UserTask;
+import com.personiv.utils.rowmapper.EmployeeTaskRowMapper;
 import com.personiv.utils.rowmapper.UserTaskMapper;
 
 
@@ -62,6 +66,12 @@ public class UserTaskDao  extends JdbcDaoSupport{
 	public void addUserTask(Long userId,Long taskId) {
 		String query = "INSERT INTO user_tasks(userId,taskId,startDate) values(?,?,CURRENT_TIMESTAMP)";
 		jdbcTemplate.update(query,new Object[] {userId,taskId});
+	}
+
+
+	public List<EmployeeTask> getTaskHistory(Period period) {
+		String query = "call _proc_getTaskHistory(?,?)";		
+		return jdbcTemplate.query(query,new Object[] {period.getStart(),period.getEnd()}, new EmployeeTaskRowMapper());
 	}
 
 

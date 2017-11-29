@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.personiv.model.Period;
 import com.personiv.model.Task;
 
 @Repository
@@ -48,5 +49,7 @@ public class TaskDao extends JdbcDaoSupport{
 		String query = "UPDATE tasks SET taskName = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?";
 		jdbcTemplate.update(query,new Object[] {task.getTaskName(),task.getId()});
 	}
+
+	
    
 }

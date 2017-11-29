@@ -76,5 +76,26 @@ angular
 				})
 		}
 		
+		TaskDataOp
+			.getTaskHistory = function(period){
+				return $http({
+					method: 'POST',
+					url: '/ActivityTracker/employee-tasks/history',
+					dataType: 'json',
+					data: period,
+					headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+				})
+		}
+		
+		TaskDataOp
+			.downloadReport = function(report){
+				return $http({
+					method: 'POST',
+					url: '/ActivityTracker/employee-tasks/report/download',
+					dataType: 'json',
+					data: report,
+					headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+				})
+		}
 		return TaskDataOp;
 	}]);

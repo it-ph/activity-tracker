@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.personiv.model.ErrorResponse;
+import com.personiv.model.Period;
 import com.personiv.model.Task;
 import com.personiv.service.TaskService;
 
@@ -45,6 +46,7 @@ public class TaskController {
 		return ResponseEntity.ok(task);
 	}
 	
+
 
 	@RequestMapping(path= "/tasks", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> updateTask(@RequestBody Task task){

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.personiv.dao.UserTaskDao;
+import com.personiv.model.EmployeeTask;
+import com.personiv.model.Period;
 import com.personiv.model.UserTask;
 
 @Service
@@ -30,5 +32,9 @@ public class UserTaskService {
 	}
 	public void endUserTask(UserTask userTask) {
 		empTaskDao.endUserTask(userTask);
+	}
+
+	public List<EmployeeTask> getTaskHistory(Period period) {
+		return empTaskDao.getTaskHistory(period);
 	}
 }

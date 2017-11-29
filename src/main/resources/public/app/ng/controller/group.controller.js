@@ -131,7 +131,7 @@ angular
 					}, 3000);
 					
 
-					console.log('emiting group event');
+					//console.log('emiting group event');
 					$scope.$emit('groupUpdateEmit',$scope.selectedGroup);
 					loadData();
 				})
@@ -142,7 +142,7 @@ angular
 		}
 		$scope.addMember = function(){
 			
-			console.log($scope.newItem.groupEmployee);
+			//console.log($scope.newItem.groupEmployee);
 			
 			$scope.error ='';
 			
@@ -156,7 +156,7 @@ angular
 			GroupDataOp
 				.addMember($scope.newItem.groupEmployee)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 
 					$scope.success_message = 'Member added succesfully!';
@@ -184,12 +184,12 @@ angular
 				employeeUser: selectedMember
 			};
 			
-			console.log(groupEmployee);
+			//console.log(groupEmployee);
 			
 			GroupDataOp
 			.removeMember(groupEmployee )
 			.then(function(response){
-				console.log(response);
+				//console.log(response);
 				
 				
 				$scope.success_message = 'Member removed succesfully!';
@@ -223,7 +223,7 @@ angular
 				GroupDataOp
 				.addAdmin($scope.newItem.groupEmployee)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.success_message = 'Admin added succesfully!';
 					
@@ -255,7 +255,7 @@ angular
 			GroupDataOp
 			.removeAdmin(groupEmployee)
 			.then(function(response){
-				console.log(response);
+				//console.log(response);
 				
 				$scope.success_message = 'Admin removed succesfully!';
 				
@@ -279,7 +279,7 @@ angular
 			GroupDataOp
 				.getAvailableMembers(group)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.memberList = response.data;
 					$scope.newItem.groupEmployee.group = group;
@@ -297,7 +297,7 @@ angular
 			GroupDataOp
 				.getAvailableAdmins(group)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.adminList = response.data;
 					$scope.newItem.groupEmployee.group = group;

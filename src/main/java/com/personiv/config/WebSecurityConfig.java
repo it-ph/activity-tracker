@@ -63,7 +63,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 					    "/password/**",
 					    "/fonts/**",
 					    "/client/**",
-					    "/activity-socket/**"
+					    "/activity-socket/**",
+					    "/employee-tasks/report/**"
 					    ).permitAll()
 			.antMatchers("/user/**").hasAuthority("ADMIN")
 			.anyRequest().fullyAuthenticated().and()
