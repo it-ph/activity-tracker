@@ -176,4 +176,19 @@
 			 return notEmpty ? moment.utc(input).format('HH:mm:ss') : 'N/A';
 		
 		}
+		 
 	}]);
+	
+	angular
+	.module('employeeTracker')
+	.filter('dateToMoment',[function(){
+		
+		 return function(input) {
+			 
+			 return  moment.utc(input).format('MMM DD YYYY h:mm:ss a');
+		
+		}
+		 
+	}]);
+	
+	

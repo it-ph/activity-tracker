@@ -1,7 +1,7 @@
 angular
 	.module('employeeTracker')
-	.controller('EmployeeTaskController',['$rootScope','$cookies','$scope', '$state','$stomp','TaskDataOp','Access',
-		function($rootScope,$cookies,$scope, $state,$stomp,TaskDataOp,Access){
+	.controller('EmployeeTaskController',['$rootScope','$cookies','$scope', '$state','$stomp','$filter','TaskDataOp','Access',
+		function($rootScope,$cookies,$scope, $state,$stomp,$filter,TaskDataOp,Access){
 		
 		
 		$scope.success_message = '';		
@@ -71,6 +71,8 @@ angular
 						}
 					}
 					
+				
+					
 					$scope.totalItems = $scope.itemList.length;
 		
 					var begin = (($scope.currentPage - 1) * $scope.numPerPage);
@@ -86,6 +88,9 @@ angular
 		
 		//end task
 		$scope.endTask = function(item){
+			item.startDate =null;
+			item.endDate = null;
+			
 			TaskDataOp
 				.endEmployeeTask(item)
 				.then(function(response){
@@ -135,7 +140,14 @@ angular
 				.then(function(response){
 					//console.log(response);
 					$scope.taskList = response.data;
-					$scope.selectedTask = $scope.taskList.length > 0 ?  $scope.taskList[0]: {};				
+					$scope.selectedTask = $scope.taskList.length > 0 ?  $scope.taskList[0]: {};		
+					
+					
+					$scope.taskList.forEach(function(obj){
+						
+						obj.startDate = moment(obj.startDate).format('MMM DD YYYY h:mm:ss a');
+						obj.endDate= (obj.endDate == null)? null:moment(obj.endDate).format('MMM DD YYYY h:mm:ss a');
+					});
 					
 				})
 				.catch(function(error){

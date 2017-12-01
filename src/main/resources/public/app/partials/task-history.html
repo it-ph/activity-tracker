@@ -42,9 +42,9 @@
 		              <tr ng-repeat="item in filteredList">
 		              	 <td>{{item.employee}}</td>
 		                 <td>{{item.task}}</td>
-		                 <td>{{item.start | date:'MMM dd, yyyy h:mm:ss a'}}</td>
-		                 <td>{{item.end | date:'MMM dd, yyyy h:mm:ss a'}}</td>
-		                 <td>{{(item.end - item.start) | durationToTime : item.end}}</td>
+		                 <td>{{item.start | dateToMoment}}</td>
+		                 <td>{{item.end | dateToMoment}}</td>
+		                 <td>{{item.duration}}</td>
 		              </tr>
 		            </tbody>
 		          </table>

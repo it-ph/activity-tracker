@@ -1,7 +1,7 @@
 angular
 	.module('employeeTracker')
-	.controller('GroupController',['$rootScope', '$scope','$cookies', '$state','GroupDataOp','Access',
-		function($rootScope, $scope,$cookies, $state,GroupDataOp,Access){
+	.controller('GroupController',['$rootScope', '$scope','$cookies', '$state','$filter','GroupDataOp','Access',
+		function($rootScope, $scope,$cookies, $state,$filter,GroupDataOp,Access){
 		
 		
 		$scope.itemList =[];
@@ -44,10 +44,27 @@ angular
 
 		Access.showNav(true);
 		
-		$scope.search = function(){
+		$scope.searchItem = function(){
 			
+			if($scope.search_keyword == ''){
+				refresh();
+			}else
+			{
+				$scope.searchList = $filter('filter')($scope.itemList,$scope.search_keyword);
+				
+				$scope.totalItems = $scope.searchList.length;
+				
+				var begin = (($scope.currentPage - 1) * $scope.numPerPage);
+				var end = begin + $scope.numPerPage;
+				$scope.filteredList = $scope.searchList.slice(begin, end);
+				
+			}
 		};
 		
+		$scope.changeNumPerPage = function(){
+			$scope.numPerPage = $scope.pageCap;
+			refresh();
+		}
 		$scope.setSelectedGroup = function(group){
 			$scope.error ='';
 			$scope.selectedGroup = group;
@@ -81,7 +98,7 @@ angular
 		}
 		
 		$scope.$on('groupUpdateBroadcast',function(event,data){
-			console.log('groupUpdate broadcast event received groupController');
+			//console.log('groupUpdate broadcast event received groupController');
 			loadData();
 		});
 		
@@ -92,7 +109,7 @@ angular
 				.addGroup($scope.newGroup)
 				.then(function(response){
 					
-					console.log(response);
+				//	console.log(response);
 					
 					$scope.success_message = 'Group added succesfully!';
 					
@@ -102,7 +119,7 @@ angular
 					setTimeout(function(){
 					    $('#successModal').modal('hide');
 					}, 3000);
-					console.log('emiting group event');
+					//console.log('emiting group event');
 					$scope.$emit('groupUpdateEmit',$scope.newGroup);
 					loadData();
 				})
@@ -119,7 +136,7 @@ angular
 			GroupDataOp
 				.editGroup($scope.selectedGroup)
 				.then(function(response){
-					console.log(response);
+					//console.log(response);
 					
 					$scope.success_message = 'Group updated succesfully!';
 					

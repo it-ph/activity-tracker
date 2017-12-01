@@ -33,6 +33,11 @@ public class UserTaskDao  extends JdbcDaoSupport{
         jdbcTemplate = getJdbcTemplate();
     }
     
+    public void endTask(UserTask task) {
+		String query = "UPDATE user_tasks SET endDate = CURRENT_TIMESTAMP, updatedAt = CURRENT_TIMESTAMP WHERE id = ?";
+		jdbcTemplate.update(query,new Object[] {task.getId()});
+		
+	}
     
     public List<UserTask> getUserTasks(){
     	

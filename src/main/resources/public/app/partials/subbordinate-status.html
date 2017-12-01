@@ -20,8 +20,8 @@
                  <td>{{member.employee.employeeNumber}}</td>
                  <td>{{member.employee.firstName}} {{member.employee.middleName}} {{member.employee.lastName}} {{member.employee.suffix}}</td>
             	 <td>{{member.task.taskName}}</td>
-            	 <td>{{member.startDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
-            	 <td>{{member.endDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
+            	 <td>{{member.startDate | dateToMoment}}</td>
+            	 <td>{{member.endDate | dateToMoment}}</td>
             	 <td>{{(member.endDate - member.startDate) | durationToTime: member.endDate }}</td>
               </tr>
             </tbody>

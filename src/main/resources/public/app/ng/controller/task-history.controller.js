@@ -69,6 +69,7 @@ angular
 							start: obj.startDate,
 							end: obj.endDate,
 							duration: (obj.endDate == null)?'N/A':moment.utc(dur.asMilliseconds()).format('HH:mm:ss')
+									
 						});
 						
 						$scope.report.tasks.push({
@@ -83,6 +84,7 @@ angular
 					});
 					
 					console.log($scope.itemList);
+					console.log('gg');
 					
 					$scope.totalItems = $scope.itemList.length;
 					var begin = (($scope.currentPage - 1) * $scope.numPerPage);
