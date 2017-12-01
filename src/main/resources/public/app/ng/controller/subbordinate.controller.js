@@ -74,6 +74,10 @@ angular
 				.getSubordinateTaskList()
 				.then(function(response){
 					$scope.itemList = response.data;
+					
+				
+					
+					
 					$scope.totalItems = $scope.itemList.length;
 					var begin = (($scope.currentPage - 1) * $scope.numPerPage);
 					var end = begin + $scope.numPerPage;

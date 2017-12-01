@@ -19,7 +19,6 @@ public class UserTaskService {
 	public List<UserTask> getUserTasks(){
 		return empTaskDao.getUserTasks();
 	}
-
 	public UserTask getUserTask(Long id) {
 		return empTaskDao.getUserTask(id);
 	}

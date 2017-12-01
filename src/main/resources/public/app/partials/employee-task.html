@@ -40,12 +40,12 @@
             <tbody>
               <tr ng-repeat="item in filteredList">
                  <td>{{item.task.taskName}}</td>
-                 <td>{{item.startDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
-                 <td ng-if="item.endDate != null">{{item.endDate | date:'MMM dd, yyyy h:mm:ss a'}}</td>
+                 <td>{{item.startDate | dateToMoment}}</td>
+                 <td ng-if="item.endDate != null">{{item.endDate | dateToMoment}}</td>
                  <td ng-if="item.endDate == null">
                  	<button type="button" class="btn btn-success" ng-click="endTask(item)">  <i class="fa fa-check"></i> end task </button>
 		         </td>
-		         <td>{{(item.endDate - item.startDate) | durationToTime: item.endDate }}</td>
+		         <td>{{(item.endDate - item.startDate) | durationToTime : item.endDate}}</td>
               </tr>
             </tbody>
           </table>
