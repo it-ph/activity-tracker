@@ -3,7 +3,6 @@
   <groupId>com.personiv</groupId>
   <artifactId>activity-tracker</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -112,6 +111,27 @@
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-aop</artifactId>
 	</dependency>
+	
+	<dependency>
+	    <groupId>com.enterprisemath</groupId>
+	    <artifactId>em-utils</artifactId>
+	    <version>2.4.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi</artifactId>
+	    <version>3.9</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi-ooxml</artifactId>
+	    <version>3.9</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi-ooxml-schemas</artifactId>
+	    <version>3.9</version>
+	</dependency>
   </dependencies>
   	<build>
 		<plugins>
@@ -122,4 +142,5 @@
 			</plugin>
 		</plugins>
 	</build>
+  	<packaging>war</packaging>
 </project>
