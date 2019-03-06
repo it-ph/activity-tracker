@@ -13,6 +13,14 @@ angular
 			})
 		}
 		AccountDataOp
+		   .getAccount = function(id){
+			return $http({
+				method: 'GET',
+				 url: '/ActivityTracker/accounts/'+id,
+				 headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+			})
+		}
+		AccountDataOp
 			.getRoleList = function(){
 				return $http({
 						method: 'GET',
@@ -85,6 +93,25 @@ angular
 						 data : account,
 						 headers: { 'Content-Type': 'application/json; charset=UTF-8'}
 				})
+		}
+		
+		AccountDataOp
+		.changeAccountRole = function(account){
+			return $http({
+					method: 'POST',
+					 url: '/ActivityTracker/accounts/changeRole',
+					 dataType: 'json',
+					 data : account,
+					 headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+			})
+		}
+		
+		AccountDataOp
+			.getSubbordinates = function(id){
+				return $http({
+						method: 'GET',
+						 url: '/ActivityTracker/accounts/supervisors/subbordinates/'+id,
+			})
 		}
 	    return AccountDataOp;
 	  }]);

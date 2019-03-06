@@ -2,12 +2,20 @@
 .calendar{
 	
 }
-
+th>i{
+	cursor: pointer;
+}
+.error-msg{
+	text-align: center;
+	color: #ff0000;
+}
 #login-wrapper{
 	min-height:100vh;
 	background: url("/ActivityTracker/app/img/OO7XQL3Q9C.jpg");
 }
-
+.pagination{
+	margin-top: 0;
+}
 .dropdown-menu>li>a{
 	color: #337ab7;
 }
@@ -35,6 +43,9 @@
   height:500px;
 }
 
+.page-header>h1>button{
+	float: right;
+}
 .datepickerdemoBasicUsage {
   /** Demo styles for mdCalendar. */ 
   
@@ -247,8 +258,19 @@ input:checked + .slider:before {
 	user-select: none;
 }
 
+.search .datetimepicker-wrapper > input{
+	width: 100%;
+}
+.search .datetimepicker-wrapper{
 
-
+	width: 100%;
+}
+.custom-select.search{
+	display: block;
+}
+.custom-select.default{
+	width: 100%;
+}
 .custom-select.small {
 	width: 104px;
 }

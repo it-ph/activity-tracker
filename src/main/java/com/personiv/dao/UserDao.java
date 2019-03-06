@@ -48,14 +48,30 @@ public class UserDao extends JdbcDaoSupport{
     }
     
 	public List<User>getUsers(){
-		String query = "call _proc_getUsers()";
+		String query = "SELECT u.*, " + 
+				"			   r.id 'roleId', " + 
+				"			   r.role, " + 
+				"			   r.createdAt 'roleCreated', " + 
+				"			   r.updatedAt 'roleUpdated' " + 
+				"		  FROM users u " + 
+				"		  JOIN user_roles ur ON ur.userId = u.id " + 
+				"		  JOIN roles r ON ur.roleId = r.id";
+		
 		List<User> users =jdbcTemplate.query(query,new UserRowMapper());
 		return users;
 	}
 	
 	public User getUserByUsername(String username) {
 		
-		String query = "call _proc_getUserByUsername(?)";
+		String query = "SELECT u.*, " + 
+				"			   r.id 'roleId', " + 
+				"			   r.role, " + 
+				"			   r.createdAt 'roleCreated', " + 
+				"			   r.updatedAt 'roleUpdated' " + 
+				"		  FROM users u " + 
+				"		  JOIN user_roles ur ON ur.userId = u.id " + 
+				"		  JOIN roles r ON ur.roleId = r.id " + 
+				"		 WHERE u.username = ?";
 		User user = jdbcTemplate.queryForObject(query,new Object[] {username}, new UserRowMapper());	
 		return user;
 	}

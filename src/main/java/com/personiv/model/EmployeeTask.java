@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeTask {
+	private Long id;
 	private Date startDate;	
 	private Date endDate;
 	private Employee employee;
 	private Task task;
+	private String remarks;
 }

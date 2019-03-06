@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import com.personiv.config.filter.JwtAuthenticationTokenFilter;
 
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
@@ -55,24 +57,23 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 			// starts authorizing configurations
 		http
 			.authorizeRequests()
-			.antMatchers("/","/index","/referral/**",
-					    "/node_modules/**",
+			.antMatchers("/","/index",
 					    "/app/**",
-					    "/metisMenu/**",
-					    "/authenticate/**",
-					    "/password/**",
-					    "/fonts/**",
 					    "/client/**",
 					    "/activity-socket/**",
-					    "/employee-tasks/report/**"
+					    "/authenticate/**",
+					    "/user-claims",
+					    "/employee-tasks/report/**",
+					    "/employee-tasks/user-history/**"
 					    ).permitAll()
-			.antMatchers("/user/**").hasAuthority("ADMIN")
+//			.antMatchers("/user/**").hasAuthority("ADMIN")
 			.anyRequest().fullyAuthenticated().and()
 			// disabling the basic authentication
 			.httpBasic().disable()
 			// configuring the session as state less. Which means there is
 			// no session in the server
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.cors().and()
 			// disabling the CSRF - Cross Site Request Forgery
 	//		.anyRequest().permitAll().and()
 			.csrf().disable();

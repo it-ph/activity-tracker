@@ -1,34 +1,22 @@
 <!-- List of task employee has done and currently doing-->
   <div class="row" ng-controller ="EmployeeTaskController">
-    <div class="panel panel-primary" style="margin-top:22px">
+    <div class="panel panel-primary" style="margin-top:22px" ng-if="!loading">
         <div class="panel-heading">My Tasks</div>
         <div class="panel-body">
    	
-          <div class="pull-right" style="padding-bottom:10px">
-               	<button type="button" id ="add-task-btn" class="btn btn-primary" data-toggle="modal" data-target="#add-task" ng-click="loadTask()"><i class="fa fa-plus"></i> New Task </button>
+          <div class="pull-right" style="padding-bottom:10px"  ng-if="items.canAddTask">
+               	<button type="button" id ="add-task-btn" class="btn btn-primary" ng-click="items.newTask()"><i class="fa fa-plus"></i> New Task </button>
           </div>
            <div class="pull-left">
 	          <div class="box-tools" style="display:inline-table">
 	             <div class="input-group">
 	               <div style="margin-right: 8px;"> Show
-	              	 <select ng-model="pageCap" ng-options ="page for page in numPerPageCap"  ng-change="changeNumPerPage()" style ="height:32px;border-radius:6px;">                 
+	              	 <select ng-model="items.numPerPage" ng-options ="page for page in numPerPageCap"  ng-change="items.changeNumPerPage()" style ="height:32px;border-radius:6px;">                 
 				 	 </select> entries
 				   </div>                 
 	             </div>
 	           </div>
 	          </div>   
-             <div class="pull-left">
-              <div class="box-tools" style="display:inline-table">
-                <div class="input-group custom-search-form">
-                    <input type="text" class="form-control ng-valid ng-dirty" placeholder="Search task" ng-change="searchDB()" ng-model="keyword" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button" ng-click="searchItem()">
-                          <i class="fa fa-search"></i>
-                      </button>
-                    </span>
-                </div>
-             </div>			
-          </div>
           
           <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -36,27 +24,29 @@
               <th>Start</th>
               <th>End</th>
               <th>Duration</th>
+              <th>Remarks</th>
             </thead>
             <tbody>
-              <tr ng-repeat="item in filteredList">
-                 <td>{{item.task.taskName}}</td>
-                 <td>{{item.startDate | dateToMoment}}</td>
-                 <td ng-if="item.endDate != null">{{item.endDate | dateToMoment}}</td>
+              <tr ng-repeat="item in items.filteredList">
+                 <td ng-click="addRemarks(item)" class="table-item">{{item.task.taskName}}</td>
+                 <td>{{item.startDate | dateToMoment : item.startDate}}</td>
+                 <td ng-if="item.endDate != null">{{item.endDate | dateToMoment : item.endDate}}</td>
                  <td ng-if="item.endDate == null">
-                 	<button type="button" class="btn btn-success" ng-click="endTask(item)">  <i class="fa fa-check"></i> end task </button>
+                 	<button type="button" class="btn btn-success" ng-click="items.endTask(item)">  <i class="fa fa-check"></i> end task </button>
 		         </td>
+		         
 		         <td>{{(item.endDate - item.startDate) | durationToTime : item.endDate}}</td>
+              	 <td>{{item.remarks}}</td>
               </tr>
             </tbody>
           </table>
-
           <div uib-pagination
-               total-items="totalItems"
-               ng-model="currentPage"
-               max-size="maxSize"
+               total-items="items.totalItems"
+               ng-model="items.currentPage"
+               max-size="items.maxSize"
                boundary-links="true"
-               items-per-page ="numPerPage"
-               ng-change = "pageChanged()"
+               items-per-page ="items.numPerPage"
+               ng-change = "items.pageChanged()"
                >
           </div>
 
@@ -76,12 +66,11 @@
              </div>
              <div class="modal-body">
 
-               <form  ng-submit="addTask()">              	
+               <form  ng-submit="items.addTask()">              	
                   <div class="form-group">		  
                        <div class ="_custom-label">Task</div>
-					 	 <select ng-model="selectedTask" ng-options ="task.taskName for task in taskList" class="form-dropdown  _custom-control" required>
-					 	 </select>
-					  	 
+					  	<div custom-select="task.taskName for task in items.taskSelection | filter: $searchTerm" ng-model="selectedTask" autofocus required class ="_custom-control"></div>					      		
+				     	<div class="error-msg">{{error}}</div>
                    </div>
                  <div class="modal-footer">
                      <input type="submit" class="btn btn-default" value ="Start" />
@@ -94,15 +83,42 @@
 
      </div>
    </div> 
-   
-  <!-- Success Modal -->
-  <div class="modal fade" id="successModal" role="dialog" style ="margin-top:200px;">
+  <!-- Add remarks Modal -->
+  <div class="modal fade" id="remarks" role="dialog" style ="margin-top:200px;">
     <div class="modal-dialog modal-md">
-         <div class="alert alert-success" style=" text-align:center; height:116px;">
-           	<div class="close" data-dismiss="modal" aria-label="close">&times;</div>
-				<div style ="position:relative;top:30px;"><strong>{{success_message}}</strong></div>
-	 </div>
+       <!-- Modal content-->
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 class="modal-title">Task Details</h4>
+             </div>
+              <form  ng-submit="items.saveRemarks()">   
+             	<div class="modal-body">
+           			<fieldset>
+           				<label>Remarks</label>
+           				<input type ="text" class="form-control" ng-model="taskWithRemarks.remarks" required/>
+           				<div class="error-msg">{{error}}</div>
+           			</fieldset>
+				      
+                 </div>
+                 <div class="modal-footer">
+                     <input type="submit" class="btn btn-default" value ="Save" />
+                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 </div>
+               </form>
+
+           </div>
+         </div>
     </div>
-  </div>
    
-  </div>
+	  <!-- Success Modal -->
+	  <div class="modal fade" id="successModal" role="dialog" style ="margin-top:200px;">
+	    <div class="modal-dialog modal-md">
+	         <div class="alert alert-success" style=" text-align:center; height:116px;">
+	           	<div class="close" data-dismiss="modal" aria-label="close">&times;</div>
+					<div style ="position:relative;top:30px;"><strong>{{success_msg}}</strong></div>
+		 </div>
+	    </div>
+	  </div>
+   
+</div>

@@ -34,6 +34,11 @@ angular
 		};
 		
 		
+		$scope.newRole = {
+				user:{
+					role:{}
+				},
+		};
 		
 		$scope.changeNumPerPage = function(){
 			$scope.numPerPage = $scope.pageCap;
@@ -136,7 +141,7 @@ angular
     				}, 3000);
     				
     				$scope.error ='';
-    				loadData();
+    				
 				})
 				.catch(function(error){
 					console.log(error);
@@ -144,6 +149,33 @@ angular
 				})
 			}
 			
+		}
+		$scope.showChangeRoleModal = function(acc){
+			$scope.newRole = acc;
+			//$scope.newRole.user.role =($scope.roleList.length >0) ? $scope.roleList[0]: {};
+			$scope.newRole.user.role  = $filter('filter')($scope.roleList,acc.user.role.role)[0];
+			
+			$('#edit-role').modal('show');
+		}
+		
+		$scope.changeAccountRole = function(){
+			AccountDataOp
+			 .changeAccountRole($scope.newRole)
+			 .then(function(r){
+				 $scope.success_message = 'User role updated succesfully!';
+				 $('#edit-role').modal('hide');
+					
+					$('#successModal').modal('show');
+					
+ 				setTimeout(function(){
+ 				    $('#successModal').modal('hide');
+ 				}, 3000);
+ 				 
+ 				$scope.error ='';
+			 })
+			 .catch(function(e){
+				 console.log(e);
+			 })
 		}
 		
 		$scope.updateAccount = function(){
@@ -162,7 +194,7 @@ angular
     				}, 3000);
     				 
     				$scope.error ='';
-    				loadData();
+    				
 				})
 				.catch(function(error){
 					console.log(error);
@@ -170,7 +202,7 @@ angular
 				})
 		}
 		
-		$scope.disableAccount = function(item){
+		$scope.disableAccount = function(item,index){
 			AccountDataOp
 				.disableAccount(item)
 				.then(function(response){
@@ -181,10 +213,17 @@ angular
 					
     				setTimeout(function(){
     				    $('#successModal').modal('hide');
+
+        				//$state.reload();
+        				// $('.table').DataTable();
+
+        				
     				}, 3000);
     				 
     				$scope.error ='';
-    				loadData();
+    				
+    				//loadData();
+    				$scope.refreshData(item,index)
 				})
 				.catch(function(error){
 					$scope.error = error.data.message;
@@ -192,7 +231,7 @@ angular
 			
 		}
 		
-		$scope.enableAccount = function(item){
+		$scope.enableAccount = function(item,index){
 			AccountDataOp
 				.enableAccount(item)
 				.then(function(response){
@@ -203,10 +242,16 @@ angular
 					
     				setTimeout(function(){
     				    $('#successModal').modal('hide');
+
+        				//$state.reload();
+        				// $('.table').DataTable();
+
+        				
     				}, 3000);
     				 
+    				
     				$scope.error ='';
-    				loadData();
+    				$scope.refreshData(item,index);
 				})
 				.catch(function(error){
 					$scope.error = error.data.message;
@@ -214,7 +259,7 @@ angular
 			
 		}
 		
-		$scope.resetAccount = function(item){
+		$scope.resetAccount = function(item,index){
 			AccountDataOp
 				.resetAccount(item)
 				.then(function(response){
@@ -225,10 +270,12 @@ angular
 					
     				setTimeout(function(){
     				    $('#successModal').modal('hide');
+
+//        				$state.reload();
+//        				 $('.table').DataTable();
     				}, 3000);
     				 
     				$scope.error ='';
-    				loadData();
 				})
 				.catch(function(error){
 					$scope.error = error.data.message;
@@ -236,28 +283,91 @@ angular
 			
 		}
 		
+		$scope.itemList ={
+				currentPage: 1,
+				maxSize: 6,
+				numPerPage: 10,
+				totalItems: 0,
+				data:[],
+				orig_data: [],
+				filteredList: [],
+				search_keyword: undefined,
+				
+				pageChanged: function(){
+					 var begin = ((this.currentPage - 1) * this.numPerPage);
+					 var end = begin + this.numPerPage;
+					 this.filteredList = this.data.slice(begin, end);
+				},
+				refresh: function(){
+					 begin = ((this.currentPage - 1) * this.numPerPage);
+					 end = begin + this.numPerPage;
+					 this.filteredList = this.data.slice(begin, end);
+			
+				},
+				searchAccount: function(){
+					this.data = $filter('filter')(this.orig_data,this.search_keyword);
+					this.totalItems = this.data.length;
+					this.refresh();
+				}
+		}
+		
 		function loadData(){
 			
 			AccountDataOp
 				.getAccountList()
 				.then(function(response){
-					$scope.itemList = response.data;
-					$scope.totalItems = $scope.itemList.length;
-		
-					var begin = (($scope.currentPage - 1) * $scope.numPerPage);
-					var end = begin + $scope.numPerPage;
-					$scope.filteredList = $scope.itemList.slice(begin, end);
+					
+//					$scope.itemList = response.data;
+//					$scope.totalItems = $scope.itemList.length;
+//		
+//					var begin = (($scope.currentPage - 1) * $scope.numPerPage);
+//					var end = begin + $scope.numPerPage;
+//					$scope.filteredList = $scope.itemList.slice(begin, end);
+//					
+					$scope.itemList.data = response.data;
+					$scope.itemList.orig_data = response.data;
+					$scope.itemList.totalItems = response.data.length;
+					$scope.itemList.refresh();
+					
+				})
+				.catch(function(error){
+					console.log(error);
+				});
+			
+
+			AccountDataOp
+				.getRoleList()
+				.then(function(response){
+					$scope.roleList = response.data;
+					
+					$scope.newRole.user.role = ($scope.roleList.length >0) ? $scope.roleList[0]: {};
+					//console.log($scope.newItem.user.role);
 				})
 				.catch(function(error){
 					console.log(error);
 				});
 		}
 		
-		function refresh(){
-			$scope.totalItems = $scope.itemList.length;
-			var begin = (($scope.currentPage - 1) * $scope.numPerPage);
-			var end = begin + $scope.numPerPage;
-			$scope.filteredList = $scope.itemList.slice(begin, end);		
+		$scope.refreshData = function(item,index){
+			
+			console.log(index);
+			console.log(item);
+			console.log($scope.itemList[index]);
+			
+			AccountDataOp
+			 .getAccount(item.id)
+			 .then(function(r){
+				// $scope.itemList.filteredList[index] = r.data;
+				// $scope.itemList.refresh();
+				 
+				 loadData();
+			 })
+			 .catch(function(e){
+				 
+			 })
+			//$scope.itemList[id] 
 		}
+		
+	
 		
 	}]); 

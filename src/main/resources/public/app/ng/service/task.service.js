@@ -44,6 +44,17 @@ angular
 					 headers: {'Content-Type': 'application/json; charset=UTF-8' }
 				})
 		}
+		TaskDataOp
+		  .addRemarks = function(task){
+				return $http({
+					method: 'POST',
+					 url: '/ActivityTracker/employee-tasks/addRemarks',
+					 dataType: 'json',
+					 data: task,
+					 headers: {'Content-Type': 'application/json; charset=UTF-8' }
+				})
+	
+		}
 		
 		TaskDataOp
 			.getMyTaskList = function(){
@@ -54,6 +65,16 @@ angular
 					 headers: { 'Content-Type': 'application/json; charset=UTF-8' }
 				})
 		}
+		TaskDataOp
+			.getUserTaskHistory = function(params){
+				return $http({
+					method: 'POST',
+					 url: '/ActivityTracker/employee-tasks/user-history',
+					 dataType: 'json',
+					 data: params,
+					 headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+				})
+			}
 		TaskDataOp
 			.addEmployeeTask = function(employeeTask){
 				return $http({
@@ -87,6 +108,43 @@ angular
 				})
 		}
 		
+		TaskDataOp
+			.getEmployeeTask = function(empNumber){
+				return $http({
+					method: 'GET',
+					url: '/ActivityTracker/employee-tasks/employee/'+empNumber,
+					dataType: 'json',
+					headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+				})
+		}
+		
+		TaskDataOp
+			 .getTaskPreferrences = function(){
+				return $http({
+					method: 'GET',
+					url: '/ActivityTracker/tasks/preferrences'
+				})
+		}
+		TaskDataOp
+		 .addTaskPreferrences = function(pref){
+			return $http({
+				method: 'POST',
+				url: '/ActivityTracker/tasks/preferrences',
+				dataType: 'json',
+				data: pref,
+				headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+			})
+		}	
+		TaskDataOp
+		 .deleteTaskPreferrences = function(pref){
+			return $http({
+				method: 'PUT',
+				url: '/ActivityTracker/tasks/preferrences',
+				dataType: 'json',
+				data: pref,
+				headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+			})
+		}
 		TaskDataOp
 			.downloadReport = function(report){
 				return $http({

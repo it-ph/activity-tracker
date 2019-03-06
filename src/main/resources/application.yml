@@ -1,19 +1,19 @@
 server:
-  port: 8081
+  port: 8080
   contextPath: /ActivityTracker
   
 spring:
   datasource:
-    url: jdbc:mysql://localhost/activity_tracker2
-    username: 
-    password: 
+    url: jdbc:mysql://localhost/activity_tracker
+    username: personivsu
+    password: 93rs0n1v
     driver-class-name: com.mysql.jdbc.Driver
   thymeleaf.cache: false
   mail:
     host: mail.emailsrvr.com
     port: 587
-    username: 
-    password: 
+    username: jerico.grijaldo@personiv.com
+    password: Welcome@2017
     properties: 
       mail: 
         debug: true
@@ -35,8 +35,4 @@ security:
   basic:
     enabled: false
     
-logging:
- level:
-  org:
-    springframework:
-      security: DEBUG
+

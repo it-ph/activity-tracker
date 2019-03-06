@@ -42,12 +42,13 @@
 		              <tr ng-repeat="item in filteredList">
 		              	 <td>{{item.employee}}</td>
 		                 <td>{{item.task}}</td>
-		                 <td>{{item.start | dateToMoment}}</td>
-		                 <td>{{item.end | dateToMoment}}</td>
+		                 <td>{{item.start | dateToMoment : item.start}}</td>
+		                 <td>{{item.end | dateToMoment : item.end}}</td>
 		                 <td>{{item.duration}}</td>
 		              </tr>
 		            </tbody>
 		          </table>
+		          
 		          <div uib-pagination
 		               total-items="totalItems"
 		               ng-model="currentPage"
@@ -55,7 +56,7 @@
 		               boundary-links="true"
 		               items-per-page ="numPerPage"
 		               ng-change = "pageChanged()"
-		               ng-if ="totalItems > 0"
+		               ng-show ="totalItems > 0"
 		               >
 	         	 </div>
               	</div>
@@ -72,45 +73,8 @@
     </div>
     
     
-     <!-- New Task Modal -->
-  <div class="modal fade" id="add-task" role="dialog">
-     <div class="modal-dialog">
 
-         <!-- Modal content-->
-         <div class="modal-content">
-             <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                 <h4 class="modal-title">Task Details</h4>
-             </div>
-             <div class="modal-body">
-
-               <form  ng-submit="addTask()">              	
-                  <div class="form-group">		  
-                       <div class ="_custom-label">Task</div>
-					 	 <select ng-model="selectedTask" ng-options ="task.taskName for task in taskList" class="form-dropdown  _custom-control" required>
-					 	 </select>
-					  	 
-                   </div>
-                 <div class="modal-footer">
-                     <input type="submit" class="btn btn-default" value ="Start" />
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                 </div>
-               </form>
-
-           </div>
-         </div>
-
-     </div>
-   </div> 
    
-  <!-- Success Modal -->
-  <div class="modal fade" id="successModal" role="dialog" style ="margin-top:200px;">
-    <div class="modal-dialog modal-md">
-         <div class="alert alert-success" style=" text-align:center; height:116px;">
-           	<div class="close" data-dismiss="modal" aria-label="close">&times;</div>
-				<div style ="position:relative;top:30px;"><strong>{{success_message}}</strong></div>
-	 </div>
-    </div>
-  </div>
+
    
   </div>

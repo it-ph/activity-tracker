@@ -3,8 +3,10 @@ angular
 	.controller('NavController',['$rootScope','$cookies', '$scope', '$state','Access',
 		function($rootScope,$cookies, $scope, $state,Access){
 
-		$scope.user ={};
 		$scope.error ='';
+		
+		$scope.user = Access.getUser();
+		
 		
 		$scope.logout = function(){
 			Access.user(undefined);

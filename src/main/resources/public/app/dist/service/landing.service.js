@@ -1,1 +1,0 @@
-angular.module("employeeTracker").factory("LandingDataOp",["$http",function(a){return{}}]);

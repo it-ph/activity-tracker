@@ -16,6 +16,16 @@ angular
 			
 		}
 		
+		EmployeeDataOp.getEmployee = function(id){
+			
+			return $http({
+				method: 'GET',
+				 url: '/ActivityTracker/employees/'+id,
+				 dataType: 'json',
+				 headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+			})
+			
+		}
 		EmployeeDataOp.addEmployee = function(employee){
 			return $http({
 				method: 'POST',

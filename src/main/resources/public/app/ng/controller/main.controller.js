@@ -63,12 +63,20 @@ angular
 		}
 		
 		$scope.broadcast = function(event,task){
+			//console.log('broadcasting ');
+			//console.log(event);
 			$scope.$broadcast(event,task);
 		}
 	
 		
 		//send to parent controller when task event is triggered
 		$scope.$on('eventEmitedName',function(event,data){
+			//console.log(data);
+			//sendMessage(data);
+			$scope.sendMessage(data);
+		});
+		
+		$scope.$on('updateTaskEmit',function(event,data){
 			//console.log(data);
 			//sendMessage(data);
 			$scope.sendMessage(data);

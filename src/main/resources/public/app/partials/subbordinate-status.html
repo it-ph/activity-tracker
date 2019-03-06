@@ -2,45 +2,69 @@
 <!-- List of task employee has done and currently doing-->
 
   <div class="row" ng-controller='SubbordinateController'>
-  
-    <div class="panel panel-primary" style="margin-top:22px" ng-repeat="item in filteredList" >
+    <div class="panel panel-primary" style="margin-top:22px" ng-repeat="item in itemList track by $index" >
         <div class="panel-heading">{{item.groupName}}</div>
         <div class="panel-body">
+        
+  			<div class="pull-left">
+	          <div class="box-tools" style="display:inline-table">
+	             <div class="input-group">
+	               <div style="margin-right: 8px;"> Show
+	              	 <select ng-model="item.numPerPage" ng-options ="page for page in numPerPageCap"  ng-change="item.refresh()" style ="height:32px;border-radius:6px;">                 
+				 	 </select> entries
+				   </div>                 
+	             </div>
+	           </div>
+	          </div>   
+             <div class="pull-right">
+              <div class="box-tools" style="display:inline-table">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control ng-valid ng-dirty" placeholder="Search members" ng-change="searchMember(item)" ng-model="item.search" name="table_search" title="" tooltip="" data-original-title="Min character length is 3">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">
+                          <i class="fa fa-search"></i>
+                      </button>
+                    </span>
+                </div>
+             </div>			
+          </div>
           <table class="table table-striped table-bordered table-hover">
             <thead>
-              <th>Employee Number</th>
-              <th>Full Name</th>
-              <th>Task</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Duration</th>
+              <th>Employee Number <i ng-click="sortGroup(item,1)" class="fa fa-caret-down"></i></th>
+              <th>Full Name <i ng-click="sortGroup(item,2)" class="fa fa-caret-down"></i></th>
+              <th>Task <i ng-click="sortGroup(item,3)" class="fa fa-caret-down"></i></th>
+              <th>Start <i ng-click="sortGroup(item,4)" class="fa fa-caret-down"></i></th>
+              <th>End <i ng-click="sortGroup(item,5)"  class="fa fa-caret-down"></i></th>
+              <th>Duration <i ng-click="sortGroup(item,6)" class="fa fa-caret-down"></i></th>
+              <th>Remarks <i ng-click="sortGroup(item,6)" class="fa fa-caret-down"></i></th>
             </thead>
             <tbody>
-              <tr ng-repeat="member in item.memberTasks">
+              <tr ng-repeat="member in item.filteredList">
                  <td>{{member.employee.employeeNumber}}</td>
                  <td>{{member.employee.firstName}} {{member.employee.middleName}} {{member.employee.lastName}} {{member.employee.suffix}}</td>
             	 <td>{{member.task.taskName}}</td>
-            	 <td>{{member.startDate | dateToMoment}}</td>
-            	 <td>{{member.endDate | dateToMoment}}</td>
-            	 <td>{{(member.endDate - member.startDate) | durationToTime: member.endDate }}</td>
+            	 <td>{{member.startDate | dateToMoment :true}}</td>
+            	 <td>{{member.endDate | dateToMoment : member.endDate}}</td>
+            	 <td>{{member.duration}}</td>
+            	 <td>{{member.remarks}}</td>
               </tr>
             </tbody>
           </table>
-
-     
-
-        </div>
+     	  <div class="pull-right">
+	           <div uib-pagination
+			         total-items="item.totalItems"
+			         ng-model="item.currentPage"
+			         max-size="item.maxSize"
+			         boundary-links="true"
+			         items-per-page ="item.numPerPage"
+			         ng-change = "item.pageChanged()"
+			         >
+	    		</div> 
+     	  </div>
+		 </div>
       </div>
-      
-           <div uib-pagination
-               total-items="totalItems"
-               ng-model="currentPage"
-               max-size="maxSize"
-               boundary-links="true"
-               items-per-page ="numPerPage"
-               ng-change = "pageChanged()"
-               >
-          </div>
+      <script>
+     
+      </script>  
     </div>
-
-
+    

@@ -39,6 +39,26 @@
 	                  }]
 	            }
 		    })
+		    .state('user-history', {
+		        url: '/user-history',
+		        templateUrl: '/ActivityTracker/app/partials/user-history.html', 
+		        controller: 'UserTaskHistoryController',
+		        resolve: {
+	                  isSupervisor : ['$q', 'Access', function ($q, Access) {
+	                      var deferred = $q.defer();
+	                      if (Access.isAuthenticated() && Access.getUser().role.role =='SUPERVISOR') {
+	                    	  deferred.resolve();
+	                    	 
+	                      }
+	                      else { 
+	                    	  
+	                    	  deferred.reject(); 
+	                     }
+	                      return deferred.promise;
+	                  }]
+	            }
+		        
+		    })
 		    .state("tasks", {
 		        url: '/tasks',
 		        templateUrl: '/ActivityTracker/app/partials/task.html', 
@@ -69,14 +89,12 @@
 	                    	  
 	                    	  deferred.reject(); 
 	                     }
-	                      //console.log(Access.getUser().role.role);
-	                     // console.log(Access.isAuthenticated() && Access.getUser().role.role =='ADMIN');
 	                      return deferred.promise;
 	                  }]
 	            }
 		        
 		    })
-		  
+
 		    .state("groups", {
 		        url: '/groups',
 		        templateUrl: '/ActivityTracker/app/partials/group2.html', 
@@ -121,8 +139,28 @@
 	                  }]
 	            }
 		      
+		    
 		    })
-		
+		    .state("task-preferrences", {
+		        url: '/task-preferrences',
+		        templateUrl: '/ActivityTracker/app/partials/task-preferrences.html', 
+		        controller: 'TaskPreferrenceController',
+		        resolve: {
+	                  isUser : ['$q', 'Access', function ($q, Access) {
+	                      var deferred = $q.defer();
+	                      if (Access.isAuthenticated() && Access.getUser().role.role =='USER') {
+	                    	  deferred.resolve();
+	                    	 
+	                      }
+	                      else { 
+	                    	  
+	                    	  deferred.reject(); 
+	                     }
+	                      return deferred.promise;
+	                  }]
+	            }
+		      
+		    })
 		   
 		}]);
 	
@@ -172,9 +210,9 @@
 	.filter('durationToTime',[function(){
 		
 		 return function(input,notEmpty) {
-			 
-			 return notEmpty ? moment.utc(input).format('HH:mm:ss') : 'N/A';
-		
+			 //utc
+			 //return notEmpty ? moment.utc(input).format('HH:mm:ss') : 'N/A';
+			 return  notEmpty ? moment.utc(moment.duration(input).asMilliseconds()).format('HH:mm:ss') : 'N/A';
 		}
 		 
 	}]);
@@ -183,12 +221,33 @@
 	.module('employeeTracker')
 	.filter('dateToMoment',[function(){
 		
-		 return function(input) {
+		 return function(input,notEmpty) {
+			 //utc			 
+			 //return notEmpty ? moment.utc(input).format('MMM DD YYYY h:mm:ss a') : '--';
 			 
-			 return  moment.utc(input).format('MMM DD YYYY h:mm:ss a');
-		
+			 //non-utc
+			 return notEmpty ? moment(input).format('MMM DD YYYY h:mm:ss a') : '--';
 		}
 		 
 	}]);
+	
+	angular
+	.module('employeeTracker')
+	.filter('dateToUtc',['$filter',function($filter){
+		
+		 return function(input,notEmpty) {
+			 //utc			 
+			 //return notEmpty ? moment.utc(input).format('MMM DD YYYY h:mm:ss a') : '--';
+			 
+			 //non-utc
+			 return notEmpty ? $filter('date')(new Date(moment.utc(input).format('MMM DD YYYY h:mm:ss a')),'MMM. dd, yyyy h:mm:ss a') : '--';
+		}
+		 
+	}]);
+	
+
+
+	
+
 	
 	
